@@ -2,15 +2,18 @@ import React, { useEffect, useState } from "react";
 import { fetchUsers, createUser, updateUser, deleteUser } from "../api/api";
 import { User } from "../types/types";
 import UserItem from "./Item";
-import UserForm from "./Form";
 import EditModal from "./EditModal";
+import CreateModal from "./CreateModal";
 
 const List: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [openEdit, setOpen] = React.useState(false);
+  const [openCreate, setCreateOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleCreateOpen = () => setCreateOpen(true);
+  const handleCreateClose = () => setCreateOpen(false);
   useEffect(() => {
     loadUsers();
   }, []);
@@ -18,6 +21,7 @@ const List: React.FC = () => {
   const loadUsers = async () => {
     try {
       const usersData = await fetchUsers();
+      console.error(usersData);
       setUsers(usersData);
     } catch (error) {
       console.error(error);
@@ -57,18 +61,14 @@ const List: React.FC = () => {
   const openEditor = (user: any) => {
     handleOpen();
     setEditingUser(user);
+    console.log(user);
   };
+
   return (
-    <div className="w-[80%] bg-[#f8f6f6] px-8 ">
-      {/* <h1>User Management</h1>
-      {editingUser ? (
-        <UserForm initialData={editingUser} onSubmit={handleUpdate} />
-      ) : (
-        <UserForm onSubmit={handleCreate} />
-      )} */}
+    <div className="w-[90%] max-[768px]:w-full bg-[#f8f6f6] px-8 ">
       <table className=" w-full ">
         <thead className="w-full border-b border-slate-500">
-          <tr className="  w-full">
+          <tr className="  w-full ">
             <th className=" text-start py-2 px-2 ">Name</th>
             <th className=" text-start py-2 px-2">Email</th>
             <th className=" text-start py-2 px-2">Phone</th>
@@ -86,7 +86,23 @@ const List: React.FC = () => {
           ))}
         </tbody>
       </table>
-      <EditModal data={editingUser} handleClose={handleClose} open={openEdit} />
+      <EditModal
+        data={editingUser}
+        handleClose={handleClose}
+        onSubmit={handleUpdate}
+        open={openEdit}
+      />
+      <CreateModal
+        onSubmit={handleCreate}
+        handleClose={handleCreateClose}
+        open={openCreate}
+      />
+      <button
+        onClick={() => handleCreateOpen()}
+        className="  fixed top-1 right-2 w-max px-4 py-2 rounded-md bg-orange-700 text-white font-medium"
+      >
+        Create
+      </button>
     </div>
   );
 };

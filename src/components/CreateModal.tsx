@@ -23,14 +23,13 @@ const style = {
   backgroundColor: "#041530",
   p: 4,
 };
-const EditModal = ({ handleClose, data, open, onSubmit }: any) => {
-  const [formData, setFormData] = useState<Omit<User, "id">>(
-    data //change here
-  );
+const CreateModal = ({ handleClose, open, onSubmit }: any) => {
+  const [formData, setFormData] = useState<Omit<User, "id">>({
+    name: "",
+    email: "",
+    phone: "",
+  });
 
-  useEffect(() => {
-    setFormData(data);
-  }, [data]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -113,4 +112,4 @@ const EditModal = ({ handleClose, data, open, onSubmit }: any) => {
   );
 };
 
-export default EditModal;
+export default CreateModal;

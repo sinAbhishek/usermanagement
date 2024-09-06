@@ -8,7 +8,7 @@ interface UserFormProps {
 
 const Form: React.FC<UserFormProps> = ({ initialData, onSubmit }) => {
   const [formData, setFormData] = useState<Omit<User, "id">>(
-    initialData || { name: "", email: "", phone: "" }
+    initialData || { name: "", email: "", phone: "" } //change here
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
